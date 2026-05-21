@@ -2,7 +2,7 @@
 pip install yfinance colorama
 ```
 
-If `pip` doesn't work, try one of these:
+If `pip` doesn't work, try:
 
 ```
 pip3 install yfinance colorama
