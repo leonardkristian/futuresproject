@@ -18,9 +18,6 @@ def fetch_futures(daycount):
         except Exception as e:
             print(f"No data for {name} ({ticker}): {e}")
             continue
-        if data.empty:
-            print(f"No data for {name} ({ticker})")
-            continue
         data.columns = data.columns.droplevel("Ticker")
         results[name] = data
     return results
@@ -32,10 +29,6 @@ def longmovement(daycount, data_by_name):
         today = float(data["Close"].iloc[-1])
         beginning = float(data["Close"].iloc[0])
         change = (today - beginning) / beginning * 100
-        names.append(name)
-        beginnings.append(beginning)
-        todays.append(today)
-        changes.append(change)
         if change > 0:
             b = f"{Fore.GREEN}▲{Style.RESET_ALL}"
         elif change < 0:
