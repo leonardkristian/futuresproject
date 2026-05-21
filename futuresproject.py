@@ -12,6 +12,7 @@ futures = {
 names = []
 beginnings = []
 todays = []
+changes = []
 
 def fetch_futures(daycount):
     results = {}
@@ -32,12 +33,13 @@ def fetch_futures(daycount):
 def longmovement(daycount, data_by_name):
     print(f"{Fore.YELLOW}===FUTURES PRICES===\n {Style.BRIGHT}{Fore.CYAN}LONGER TERM MOVEMENT{Style.RESET_ALL}")
     for name, data in data_by_name.items():
-        names.append(name)
-        beginnings.append(beginning)
-        todays.append(today)
         today = float(data["Close"].iloc[-1])
         beginning = float(data["Close"].iloc[0])
         change = (today - beginning) / beginning * 100
+        names.append(name)
+        beginnings.append(beginning)
+        todays.append(today)
+        changes.append(change)
         if change > 0:
             b = f"{Fore.GREEN}▲{Style.RESET_ALL}"
         elif change < 0:
@@ -85,8 +87,8 @@ longmovement(daycount, data_by_name)
 sessionvolatility(daycount, data_by_name)
 
 colors = ["green" if c > 0 else "red" for c in changes]
-plt.bar(names, changes, color = colors)
+plt.bar(names, changes, color=colors)
 plt.ylabel("Change (%)")
 plt.title(f"Futures movement ({daycount} days)")
-plt.axhline(y=0, color = "black", line width = 0.5)
-plt.show
+plt.axhline(y=0, color="black", linewidth=0.5)
+plt.show()
