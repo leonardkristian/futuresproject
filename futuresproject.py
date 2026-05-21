@@ -23,8 +23,8 @@ def fetch_futures(daycount):
     return results
 
 # loon funktsiooni selle jaoks, et analuusida kui palju on antud futuur kysitud paevaarvust liikus
+print(f"{Fore.YELLOW}===FUTURES PRICES===\n {Style.BRIGHT}{Fore.CYAN}LONGER TERM MOVEMENT{Style.RESET_ALL}")
 def longmovement(daycount, data_by_name):
-    print(f"{Fore.YELLOW}===FUTURES PRICES===\n {Style.BRIGHT}{Fore.CYAN}LONGER TERM MOVEMENT{Style.RESET_ALL}")
     for name, data in data_by_name.items():
         today = float(data["Close"].iloc[-1])
         beginning = float(data["Close"].iloc[0])
@@ -38,7 +38,7 @@ def longmovement(daycount, data_by_name):
         print(f"\n{name} price has moved from {beginning:.2f} ({daycount} days' ago close) to {today:.2f} (currently) {b}({change:.3f}%)")
         if abs(change) > 2:
             print(f"Alert: {name} has moved more than 2%!")
-    print(f"{Fore.YELLOW}====================={Style.RESET_ALL}")
+print(f"{Fore.YELLOW}====================={Style.RESET_ALL}")
 
 # loon funktsiooni, mis naitab, millises piirkonnas on hind eelmise toopaeva jooksul turul liikunud
 def sessionvolatility(daycount, data_by_name):
