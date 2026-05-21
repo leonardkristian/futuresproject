@@ -1,7 +1,7 @@
 import yfinance as yf
 from colorama import Style, Fore
-import matplotlib.pyplot as plt
 
+# loon hulga for funktsiooni jaoks
 futures = {
     "GC=F": "Gold",
     "ES=F": "S&P 500",
@@ -9,11 +9,7 @@ futures = {
     "NQ=F": "Nasdaq 100",
 }
 
-names = []
-beginnings = []
-todays = []
-changes = []
-
+# loon funktsiooni mis laeb andmeid alla iga mainitud futuuri kohta, kuld, snp jne
 def fetch_futures(daycount):
     results = {}
     for ticker, name in futures.items():
@@ -29,7 +25,7 @@ def fetch_futures(daycount):
         results[name] = data
     return results
 
-
+# loon funktsiooni selle jaoks, et analuusida kui palju on antud futuur kysitud paevaarvust liikus
 def longmovement(daycount, data_by_name):
     print(f"{Fore.YELLOW}===FUTURES PRICES===\n {Style.BRIGHT}{Fore.CYAN}LONGER TERM MOVEMENT{Style.RESET_ALL}")
     for name, data in data_by_name.items():
@@ -51,7 +47,7 @@ def longmovement(daycount, data_by_name):
             print(f"Alert: {name} has moved more than 2%!")
     print(f"{Fore.YELLOW}====================={Style.RESET_ALL}")
 
-
+# loon funktsiooni, mis naitab, millises piirkonnas on hind eelmise toopaeva jooksul turul liikunud
 def sessionvolatility(daycount, data_by_name):
     print(f"{Style.BRIGHT}{Fore.CYAN}===INTRADAY VOLATILITY==={Style.RESET_ALL}")
     for name, data in data_by_name.items():
@@ -70,7 +66,7 @@ def sessionvolatility(daycount, data_by_name):
         print(f"{name} intraday volatility: {volatility:.2f}%")
     print(f"{Fore.YELLOW}====================={Style.RESET_ALL}")
 
-
+# loon pidevalt küsiva tsükli
 while True:
     try:
         daycount = int(round(float(input(
@@ -83,40 +79,3 @@ while True:
     except ValueError:
         print(f"{Fore.RED}Invalid input. Please enter a number.{Style.RESET_ALL}")
 data_by_name = fetch_futures(daycount)
-
-while True:
-    print("\nWhat would you like to do?")
-    print("1) Check price movement")
-    print("2) Check intraday volatility")
-    print("3) Both")
-    print("4) Change timeframe")
-    print("5) Quit")
-    
-    choice = input("Select an option: ")
-    
-    if choice == "1":
-        longmovement(daycount, data_by_name)
-    elif choice == "2":
-        sessionvolatility(daycount, data_by_name)
-    elif choice == "3":
-        longmovement(daycount, data_by_name)
-        sessionvolatility(daycount, data_by_name)
-    elif choice == "4":
-        daycount = int(round(float(input("New timeframe: "))))
-        names.clear()
-        changes.clear()
-        beginnings.clear()
-        todays.clear()
-        data_by_name = fetch_futures(daycount)
-    elif choice == "5":
-        print("Goodbye!")
-        break
-    else:
-        print("Invalid option, try again.")
-
-colors = ["green" if c > 0 else "red" for c in changes]
-plt.bar(names, changes, color=colors)
-plt.ylabel("Change (%)")
-plt.title(f"Futures movement ({daycount} days)")
-plt.axhline(y=0, color="black", linewidth=0.5)
-plt.show()
