@@ -83,8 +83,36 @@ while True:
     except ValueError:
         print(f"{Fore.RED}Invalid input. Please enter a number.{Style.RESET_ALL}")
 data_by_name = fetch_futures(daycount)
-longmovement(daycount, data_by_name)
-sessionvolatility(daycount, data_by_name)
+
+while True:
+    print("\nWhat would you like to do?")
+    print("1) Check price movement")
+    print("2) Check intraday volatility")
+    print("3) Both")
+    print("4) Change timeframe")
+    print("5) Quit")
+    
+    choice = input("Select an option: ")
+    
+    if choice == "1":
+        longmovement(daycount, data_by_name)
+    elif choice == "2":
+        sessionvolatility(daycount, data_by_name)
+    elif choice == "3":
+        longmovement(daycount, data_by_name)
+        sessionvolatility(daycount, data_by_name)
+    elif choice == "4":
+        daycount = int(round(float(input("New timeframe: "))))
+        names.clear()
+        changes.clear()
+        beginnings.clear()
+        todays.clear()
+        data_by_name = fetch_futures(daycount)
+    elif choice == "5":
+        print("Goodbye!")
+        break
+    else:
+        print("Invalid option, try again.")
 
 colors = ["green" if c > 0 else "red" for c in changes]
 plt.bar(names, changes, color=colors)
